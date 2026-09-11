@@ -1,0 +1,29 @@
+services:
+  postgres-vector:
+    image: pgvector/pgvector:pg16
+    container_name: pgvector-research
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: research
+      POSTGRES_DB: vectorbench
+    ports:
+      - "5432:5432"
+    command: >
+      postgres
+      -c shared_buffers=1.5GB
+      -c maintenance_work_mem=768MB
+      -c max_wal_size=2GB
+    deploy:
+      resources:
+        limits:
+          memory: 3.5G
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgvector_data:
