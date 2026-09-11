@@ -1,4 +1,5 @@
 - [PostgreSQL + pgvector in Docker](#postgresql--pgvector-in-docker)
+- [Set up the Python environment](#set-up-the-python-environment)
 
 # PostgreSQL + pgvector in Docker
 ```
@@ -91,4 +92,36 @@ docker compose down
 ```
 ```
 docker compose up -d
+```
+# Set up the Python environment
+
+```
+python --version
+```
+```
+cd .\research\vector-benchmark\
+```
+```
+python -m venv venv
+```
+```
+.\venv\Scripts\activate
+```
+```
+python -m pip install --upgrade pip
+```
+```
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+```
+```
+pip install -r requirements.txt
+```
+```
+python smoke_test_env.py
+```
+```
+pip freeze > requirements-lock.txt
+```
+```
+deactivate
 ```
