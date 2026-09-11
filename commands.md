@@ -136,3 +136,9 @@ python scripts\generate_embeddings.py
 ```
 python -c "import numpy as np; a = np.load('embeddings/embeddings_500.npy'); print(a.shape, a.dtype)"
 ```
+```
+python .\scripts\validate_tier.py 100000
+```
+```
+python .\sanity_check.py
+```

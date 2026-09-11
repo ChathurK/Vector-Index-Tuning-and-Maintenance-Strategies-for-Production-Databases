@@ -4,6 +4,7 @@ from sentence_transformers import SentenceTransformer
 from datasets import load_dataset
 import time
 import pathlib
+import pickle
 import os
 
 SEED = 42
@@ -12,20 +13,32 @@ MAX_TIER = 1_000_000
 SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
 DATA_DIR = SCRIPT_DIR.parent / "embeddings"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
+POOL_PATH = DATA_DIR / "master_pool.pkl"
 # os.makedirs(DATA_DIR, exist_ok=True)
 
 def build_master_pool(pool_size):
-    """Build one candidate pool sized for the largest tier, plus buffer."""
+    if POOL_PATH.exists():
+        print(f"Loading cached pool from {POOL_PATH}")
+        with open(POOL_PATH, "rb") as f:
+            return pickle.load(f)
+
     ds = load_dataset("wikimedia/wikipedia", "20231101.en", split="train", streaming=True)
     sentences = []
     for row in ds:
-        for s in row["text"].split(". "):
+        clean_text = " ".join(row["text"].split())  # collapses all whitespace, including \n\n, to single spaces
+        for s in clean_text.split(". "):
             s = s.strip()
             if 20 < len(s) < 300:
                 sentences.append(s)
         if len(sentences) >= pool_size:
             break
-    return sentences[:pool_size]
+    pool = sentences[:pool_size]
+
+    with open(POOL_PATH, "wb") as f:
+        pickle.dump(pool, f)
+    print(f"Saved pool ({len(pool)} sentences) to {POOL_PATH}")
+
+    return pool
 
 def get_nested_permutation(pool_len):
     """One fixed permutation reused across all tiers to guarantee nesting."""
@@ -67,6 +80,6 @@ if __name__ == "__main__":
     pool = build_master_pool(pool_size)
     permutation = get_nested_permutation(len(pool))
 
-    generate_tier(100_000, model, pool, permutation)
+    # generate_tier(100_000, model, pool, permutation)
     # generate_tier(500_000, model, pool, permutation)
-    # generate_tier(1_000_000, model, pool, permutation)
+    generate_tier(1_000_000, model, pool, permutation)
