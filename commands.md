@@ -1,5 +1,6 @@
 - [PostgreSQL + pgvector in Docker](#postgresql--pgvector-in-docker)
 - [Set up the Python environment](#set-up-the-python-environment)
+- [Dataset generation pipeline](#dataset-generation-pipeline)
 
 # PostgreSQL + pgvector in Docker
 ```
@@ -124,4 +125,14 @@ pip freeze > requirements-lock.txt
 ```
 ```
 deactivate
+```
+# Dataset generation pipeline
+```
+mkdir data, scripts, embeddings
+```
+```
+python scripts\generate_embeddings.py
+```
+```
+python -c "import numpy as np; a = np.load('embeddings/embeddings_500.npy'); print(a.shape, a.dtype)"
 ```
