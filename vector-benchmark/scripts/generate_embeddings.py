@@ -14,31 +14,29 @@ DATA_DIR = SCRIPT_DIR.parent / "embeddings"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 # os.makedirs(DATA_DIR, exist_ok=True)
 
-def load_source_sentences(n):
-    """Load and deterministically sample n sentences from Wikipedia."""
+def build_master_pool(pool_size):
+    """Build one candidate pool sized for the largest tier, plus buffer."""
     ds = load_dataset("wikimedia/wikipedia", "20231101.en", split="train", streaming=True)
-    rng = np.random.default_rng(SEED)
     sentences = []
     for row in ds:
-        text = row["text"]
-        # crude split into sentence-like chunks; refine as needed
-        for s in text.split(". "):
+        for s in row["text"].split(". "):
             s = s.strip()
             if 20 < len(s) < 300:
                 sentences.append(s)
-            if len(sentences) >= n * 2:  # oversample, then trim deterministically
-                break
-        if len(sentences) >= n * 2:
+        if len(sentences) >= pool_size:
             break
-    idx = rng.choice(len(sentences), size=n, replace=False)
-    idx.sort()  # preserve nesting property across tiers
-    return [sentences[i] for i in idx]
+    return sentences[:pool_size]
 
-def generate_tier(n, model):
+def get_nested_permutation(pool_len):
+    """One fixed permutation reused across all tiers to guarantee nesting."""
+    rng = np.random.default_rng(SEED)
+    return rng.permutation(pool_len)
+
+def generate_tier(n, model, pool, permutation):
     print(f"--- Generating tier: {n} vectors ---")
-    sentences = load_source_sentences(n)
+    idx = np.sort(permutation[:n])  # sorted slice of the SAME permutation for every tier
+    sentences = [pool[i] for i in idx]
 
-    # save the text index for traceability
     pd.DataFrame({"id": range(n), "text": sentences}).to_csv(
         f"{DATA_DIR}/sentences_{n}.csv", index=False
     )
@@ -65,10 +63,10 @@ def generate_tier(n, model):
 if __name__ == "__main__":
     model = SentenceTransformer("all-mpnet-base-v2")
 
-    # Step 1: small validation slice first
-    generate_tier(500, model)
+    pool_size = int(MAX_TIER * 1.1)  # small buffer for filtering safety
+    pool = build_master_pool(pool_size)
+    permutation = get_nested_permutation(len(pool))
 
-    # Step 2: uncomment once validated
-    # generate_tier(100_000, model)
-    # generate_tier(500_000, model)
-    # generate_tier(1_000_000, model)
+    generate_tier(100_000, model, pool, permutation)
+    # generate_tier(500_000, model, pool, permutation)
+    # generate_tier(1_000_000, model, pool, permutation)
