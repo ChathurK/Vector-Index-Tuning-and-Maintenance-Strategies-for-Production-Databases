@@ -134,6 +134,9 @@ mkdir data, scripts, embeddings
 python scripts\generate_embeddings.py
 ```
 ```
+python .\scripts\generate_embeddings.py *> logs\gen_1m.log
+```
+```
 python -c "import numpy as np; a = np.load('embeddings/embeddings_500.npy'); print(a.shape, a.dtype)"
 ```
 ```
