@@ -184,3 +184,12 @@ SELECT count(*) FROM items_1m;
 docker exec pgvector-research pg_dump -U postgres -d vectorbench -F c -f /tmp/vectorbench_backup.dump
 docker cp pgvector-research:/tmp/vectorbench_backup.dump C:\research\vector-benchmark\backups\vectorbench_backup.dump
 ```
+```
+python .\scripts\fetch_sample.py
+```
+```
+python .\scripts\build_index.py
+```
+```
+python .\scripts\run_benchmark.py
+```

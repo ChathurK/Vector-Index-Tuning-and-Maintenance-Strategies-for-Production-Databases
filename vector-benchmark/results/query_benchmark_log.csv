@@ -1,0 +1,2 @@
+table,index_type,param,k,n_queries,qps,mean_latency_ms,p95_latency_ms,p99_latency_ms,mean_recall
+items_100k,hnsw,40,10,500,53.53464243307857,18.30298819998825,63.6274749996118,123.24922099986902,0.9704
