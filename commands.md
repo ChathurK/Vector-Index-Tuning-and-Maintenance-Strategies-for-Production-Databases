@@ -18,7 +18,7 @@ docker compose ps
 ```
 
 > <container_name> is the name of the container running PostgreSQL. You can find it by running `docker compose ps`.
-> "pgvector_research" is the name of the container running PostgreSQL.
+> "pgvector-research" is the name of the container running PostgreSQL.
 ```
 docker exec -it <container_name> psql -U postgres
 ```
@@ -192,4 +192,7 @@ python .\scripts\build_index.py
 ```
 ```
 python .\scripts\run_benchmark.py
+```
+```
+python .\scripts\sweep_phase3_tuning.py *> logs\phase3_tuning.log
 ```
