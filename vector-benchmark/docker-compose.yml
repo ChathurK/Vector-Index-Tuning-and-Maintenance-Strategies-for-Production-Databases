@@ -3,6 +3,7 @@ services:
     image: pgvector/pgvector:pg16
     container_name: pgvector-research
     restart: unless-stopped
+    stop_grace_period: 60s
     environment:
       POSTGRES_PASSWORD: research
       POSTGRES_DB: vectorbench

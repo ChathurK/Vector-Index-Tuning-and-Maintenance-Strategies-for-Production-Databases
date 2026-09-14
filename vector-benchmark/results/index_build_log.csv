@@ -1,0 +1,2 @@
+table,index_type,params,build_time_sec,size_bytes
+items_100k,hnsw,"m=16,ef_construction=64",64.30,408936448
