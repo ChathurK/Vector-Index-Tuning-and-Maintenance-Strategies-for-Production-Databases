@@ -1,6 +1,7 @@
 - [PostgreSQL + pgvector in Docker](#postgresql--pgvector-in-docker)
 - [Set up the Python environment](#set-up-the-python-environment)
 - [Dataset generation pipeline](#dataset-generation-pipeline)
+- [The benchmark harness](#the-benchmark-harness)
 
 # PostgreSQL + pgvector in Docker
 ```
@@ -15,8 +16,15 @@ docker compose logs -f
 ```
 docker compose ps
 ```
+
+> <container_name> is the name of the container running PostgreSQL. You can find it by running `docker compose ps`.
+> "pgvector_research" is the name of the container running PostgreSQL.
 ```
 docker exec -it <container_name> psql -U postgres
+```
+> Here -d vectorbench is the database name, and if you don't mention it, it will default to the user name (postgres) as the database name.
+```
+docker exec -it <container_name> psql -U postgres -d vectorbench -c "CREATE EXTENSION IF NOT EXISTS vector;"
 ```
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -94,6 +102,16 @@ docker compose down
 ```
 docker compose up -d
 ```
+> Stops the main processes without deleting anything; `start` wakes them right back up.
+```
+docker stop -t 60 pgvector-research
+```
+```
+docker start pgvector-research
+```
+```
+docker logs -f pgvector-research
+```
 # Set up the Python environment
 
 ```
@@ -144,4 +162,25 @@ python .\scripts\validate_tier.py 100000
 ```
 ```
 python .\sanity_check.py
+```
+# The benchmark harness
+```
+python .\scripts\compute_ground_truth.py
+```
+```
+python .\scripts\load_to_postgres.py
+```
+```sql
+ALTER TABLE items_100k SET LOGGED;
+ALTER TABLE items_500k SET LOGGED;
+ALTER TABLE items_1m SET LOGGED;
+
+-- Re-verify counts
+SELECT count(*) FROM items_100k;
+SELECT count(*) FROM items_500k;
+SELECT count(*) FROM items_1m;
+```
+```
+docker exec pgvector-research pg_dump -U postgres -d vectorbench -F c -f /tmp/vectorbench_backup.dump
+docker cp pgvector-research:/tmp/vectorbench_backup.dump C:\research\vector-benchmark\backups\vectorbench_backup.dump
 ```
