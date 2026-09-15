@@ -9,7 +9,7 @@ from build_index import build_hnsw_index, build_ivfflat_index
 from run_benchmark import run_benchmark
 
 DB_CONFIG = dict(
-    host="localhost", port=5432,
+    host="localhost", port=5433,
     dbname="vectorbench", user="postgres", password="research"
 )
 

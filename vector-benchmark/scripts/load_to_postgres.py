@@ -8,7 +8,7 @@ SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
 DATA_DIR = SCRIPT_DIR.parent / "embeddings"
 
 DB_CONFIG = dict(
-    host="localhost", port=5432,
+    host="localhost", port=5433,
     dbname="vectorbench", user="postgres", password="research"
 )
 

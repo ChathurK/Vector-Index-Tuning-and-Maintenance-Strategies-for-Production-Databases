@@ -3,7 +3,7 @@ from sentence_transformers import SentenceTransformer
 
 # Test 1: database connection
 conn = psycopg2.connect(
-    host="localhost", port=5432,
+    host="localhost", port=5433,
     dbname="vectorbench", user="postgres", password="research"
 )
 cur = conn.cursor()

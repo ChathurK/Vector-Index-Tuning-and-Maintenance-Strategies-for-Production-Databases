@@ -4,7 +4,7 @@ import csv
 import pathlib
 
 DB_CONFIG = dict(
-    host="localhost", port=5432,
+    host="localhost", port=5433,
     dbname="vectorbench", user="postgres", password="research"
 )
 
