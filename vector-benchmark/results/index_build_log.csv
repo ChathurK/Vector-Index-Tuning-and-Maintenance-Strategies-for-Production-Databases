@@ -1,2 +1,14 @@
 table,index_type,params,build_time_sec,size_bytes
-items_100k,hnsw,"m=16,ef_construction=64",64.30,408936448
+items_500k,hnsw,"m=16,ef_construction=64",727.87,2038759424
+items_500k,hnsw,"m=16,ef_construction=128",3365.50,2038759424
+items_500k,hnsw,"m=16,ef_construction=64",752.31,2038759424
+items_500k,hnsw,"m=16,ef_construction=128",1305.42,2038759424
+items_500k,hnsw,"m=16,ef_construction=200",2379.89,2038759424
+items_500k,hnsw,"m=32,ef_construction=64",2138.40,2048008192
+items_500k,hnsw,"m=32,ef_construction=128",2736.29,2038759424
+items_500k,hnsw,"m=32,ef_construction=200",3221.22,2038759424
+items_500k,hnsw,"m=64,ef_construction=128",8630.79,2085060608
+items_500k,hnsw,"m=64,ef_construction=200",10162.65,2074902528
+items_500k,ivfflat,lists=353,36.13,2050220032
+items_500k,ivfflat,lists=707,61.44,2052317184
+items_500k,ivfflat,lists=1414,132.25,2056495104

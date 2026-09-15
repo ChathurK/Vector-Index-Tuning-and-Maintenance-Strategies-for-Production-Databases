@@ -1,0 +1,92 @@
+Starting Phase 3 tuning sweep on items_500k (500000 vectors)
+HNSW builds: 9, benchmark runs: 45
+IVFFlat builds: 3, benchmark runs: 12
+
+=== Building HNSW: M=16, ef_construction=64 ===
+HNSW built on items_500k (m=16, ef_construction=64): 752.3s, 2038.8MB
+items_500k | hnsw param=10 | k=10 | QPS=310.6 | recall=0.8342 | p95=4.25ms
+items_500k | hnsw param=20 | k=10 | QPS=475.1 | recall=0.9100 | p95=2.76ms
+items_500k | hnsw param=40 | k=10 | QPS=224.9 | recall=0.9526 | p95=10.16ms
+items_500k | hnsw param=80 | k=10 | QPS=224.3 | recall=0.9770 | p95=6.35ms
+items_500k | hnsw param=160 | k=10 | QPS=125.2 | recall=0.9878 | p95=16.23ms
+
+=== Building HNSW: M=16, ef_construction=128 ===
+HNSW built on items_500k (m=16, ef_construction=128): 1305.4s, 2038.8MB
+items_500k | hnsw param=10 | k=10 | QPS=263.8 | recall=0.8452 | p95=5.02ms
+items_500k | hnsw param=20 | k=10 | QPS=325.7 | recall=0.9236 | p95=5.97ms
+items_500k | hnsw param=40 | k=10 | QPS=264.5 | recall=0.9602 | p95=5.31ms
+items_500k | hnsw param=80 | k=10 | QPS=252.3 | recall=0.9828 | p95=5.40ms
+items_500k | hnsw param=160 | k=10 | QPS=109.9 | recall=0.9922 | p95=15.93ms
+
+=== Building HNSW: M=16, ef_construction=200 ===
+HNSW built on items_500k (m=16, ef_construction=200): 2379.9s, 2038.8MB
+items_500k | hnsw param=10 | k=10 | QPS=153.3 | recall=0.8418 | p95=4.43ms
+items_500k | hnsw param=20 | k=10 | QPS=447.3 | recall=0.9248 | p95=2.75ms
+items_500k | hnsw param=40 | k=10 | QPS=311.4 | recall=0.9660 | p95=5.45ms
+items_500k | hnsw param=80 | k=10 | QPS=98.5 | recall=0.9854 | p95=11.20ms
+items_500k | hnsw param=160 | k=10 | QPS=120.2 | recall=0.9938 | p95=12.74ms
+
+=== Building HNSW: M=32, ef_construction=64 ===
+HNSW built on items_500k (m=32, ef_construction=64): 2138.4s, 2048.0MB
+items_500k | hnsw param=10 | k=10 | QPS=187.9 | recall=0.8938 | p95=8.52ms
+items_500k | hnsw param=20 | k=10 | QPS=177.7 | recall=0.9408 | p95=11.25ms
+items_500k | hnsw param=40 | k=10 | QPS=183.9 | recall=0.9718 | p95=9.51ms
+items_500k | hnsw param=80 | k=10 | QPS=123.3 | recall=0.9838 | p95=13.23ms
+items_500k | hnsw param=160 | k=10 | QPS=63.9 | recall=0.9914 | p95=23.85ms
+
+=== Building HNSW: M=32, ef_construction=128 ===
+HNSW built on items_500k (m=32, ef_construction=128): 2736.3s, 2038.8MB
+items_500k | hnsw param=10 | k=10 | QPS=188.4 | recall=0.9132 | p95=4.94ms
+items_500k | hnsw param=20 | k=10 | QPS=361.9 | recall=0.9570 | p95=2.74ms
+items_500k | hnsw param=40 | k=10 | QPS=266.6 | recall=0.9798 | p95=4.79ms
+items_500k | hnsw param=80 | k=10 | QPS=110.5 | recall=0.9904 | p95=11.57ms
+items_500k | hnsw param=160 | k=10 | QPS=111.2 | recall=0.9960 | p95=13.61ms
+
+=== Building HNSW: M=32, ef_construction=200 ===
+HNSW built on items_500k (m=32, ef_construction=200): 3221.2s, 2038.8MB
+items_500k | hnsw param=10 | k=10 | QPS=199.7 | recall=0.9192 | p95=8.06ms
+items_500k | hnsw param=20 | k=10 | QPS=137.4 | recall=0.9614 | p95=6.35ms
+items_500k | hnsw param=40 | k=10 | QPS=146.5 | recall=0.9816 | p95=9.05ms
+items_500k | hnsw param=80 | k=10 | QPS=125.9 | recall=0.9914 | p95=13.15ms
+items_500k | hnsw param=160 | k=10 | QPS=83.9 | recall=0.9964 | p95=21.79ms
+
+=== SKIPPED: HNSW M=64, ef_construction=64 (violates ef_construction >= 2*M constraint) ===
+
+=== Building HNSW: M=64, ef_construction=128 ===
+HNSW built on items_500k (m=64, ef_construction=128): 8630.8s, 2085.1MB
+items_500k | hnsw param=10 | k=10 | QPS=210.8 | recall=0.9508 | p95=6.42ms
+items_500k | hnsw param=20 | k=10 | QPS=142.7 | recall=0.9774 | p95=6.41ms
+items_500k | hnsw param=40 | k=10 | QPS=182.0 | recall=0.9908 | p95=7.04ms
+items_500k | hnsw param=80 | k=10 | QPS=117.7 | recall=0.9948 | p95=11.20ms
+items_500k | hnsw param=160 | k=10 | QPS=2.1 | recall=0.9990 | p95=542.66ms
+
+=== Building HNSW: M=64, ef_construction=200 ===
+HNSW built on items_500k (m=64, ef_construction=200): 10162.6s, 2074.9MB
+items_500k | hnsw param=10 | k=10 | QPS=110.5 | recall=0.9534 | p95=15.31ms
+items_500k | hnsw param=20 | k=10 | QPS=97.8 | recall=0.9766 | p95=9.26ms
+items_500k | hnsw param=40 | k=10 | QPS=146.9 | recall=0.9898 | p95=9.56ms
+items_500k | hnsw param=80 | k=10 | QPS=104.1 | recall=0.9950 | p95=16.82ms
+items_500k | hnsw param=160 | k=10 | QPS=1.5 | recall=0.9986 | p95=1076.46ms
+
+=== Building IVFFlat: nlist=353 ===
+IVFFlat built on items_500k (lists=353): 36.1s, 2050.2MB
+items_500k | ivfflat param=1 | k=10 | QPS=265.8 | recall=0.5036 | p95=7.50ms
+items_500k | ivfflat param=5 | k=10 | QPS=173.9 | recall=0.8394 | p95=7.83ms
+items_500k | ivfflat param=10 | k=10 | QPS=99.6 | recall=0.9118 | p95=17.07ms
+items_500k | ivfflat param=20 | k=10 | QPS=65.9 | recall=0.9566 | p95=20.16ms
+
+=== Building IVFFlat: nlist=707 ===
+IVFFlat built on items_500k (lists=707): 61.4s, 2052.3MB
+items_500k | ivfflat param=1 | k=10 | QPS=366.3 | recall=0.4802 | p95=4.58ms
+items_500k | ivfflat param=5 | k=10 | QPS=232.8 | recall=0.8012 | p95=7.16ms
+items_500k | ivfflat param=10 | k=10 | QPS=219.1 | recall=0.8834 | p95=5.02ms
+items_500k | ivfflat param=20 | k=10 | QPS=136.4 | recall=0.9372 | p95=8.48ms
+
+=== Building IVFFlat: nlist=1414 ===
+IVFFlat built on items_500k (lists=1414): 132.2s, 2056.5MB
+items_500k | ivfflat param=1 | k=10 | QPS=362.4 | recall=0.4344 | p95=4.13ms
+items_500k | ivfflat param=5 | k=10 | QPS=341.0 | recall=0.7756 | p95=4.09ms
+items_500k | ivfflat param=10 | k=10 | QPS=250.9 | recall=0.8710 | p95=5.22ms
+items_500k | ivfflat param=20 | k=10 | QPS=168.2 | recall=0.9244 | p95=8.03ms
+
+Phase 3 tuning sweep complete.
