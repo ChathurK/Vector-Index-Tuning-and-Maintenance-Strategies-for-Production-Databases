@@ -32,6 +32,11 @@ IVFFLAT_NPROBE_SWEEP = [1, 5, 10, 20]  # per Ch3, Table 5
 def run_hnsw_sweep(conn):
     for m in HNSW_M_VALUES:
         for ef_c in HNSW_EF_CONSTRUCTION_VALUES:
+            if ef_c < 2 * m:
+                print(f"\n=== SKIPPED: HNSW M={m}, ef_construction={ef_c} "
+                      f"(violates ef_construction >= 2*M constraint) ===")
+                continue
+
             print(f"\n=== Building HNSW: M={m}, ef_construction={ef_c} ===")
             build_hnsw_index(conn, TABLE, m=m, ef_construction=ef_c)
 
