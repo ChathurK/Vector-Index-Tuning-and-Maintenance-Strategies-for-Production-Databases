@@ -1,0 +1,59 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Streaming past the first 1100000 filtered sentences to build a pool disjoint from all existing tiers/queries...
+Saved disjoint insert pool (550000 sentences) -> /Users/dulan/Downloads/chathura_temp/research/vector-benchmark/embeddings/insert_pool.pkl
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 10683.32it/s]
+  256/550000 done, 285.3 sent/sec
+  10496/550000 done, 414.3 sent/sec
+  20736/550000 done, 413.6 sent/sec
+  30976/550000 done, 418.4 sent/sec
+  41216/550000 done, 415.9 sent/sec
+  51456/550000 done, 419.7 sent/sec
+  61696/550000 done, 417.4 sent/sec
+  71936/550000 done, 413.7 sent/sec
+  82176/550000 done, 414.4 sent/sec
+  92416/550000 done, 414.2 sent/sec
+  102656/550000 done, 413.7 sent/sec
+  112896/550000 done, 413.9 sent/sec
+  123136/550000 done, 413.9 sent/sec
+  133376/550000 done, 413.9 sent/sec
+  143616/550000 done, 414.0 sent/sec
+  153856/550000 done, 414.6 sent/sec
+  164096/550000 done, 415.3 sent/sec
+  174336/550000 done, 415.3 sent/sec
+  184576/550000 done, 415.5 sent/sec
+  194816/550000 done, 416.0 sent/sec
+  205056/550000 done, 416.0 sent/sec
+  215296/550000 done, 416.4 sent/sec
+  225536/550000 done, 416.1 sent/sec
+  235776/550000 done, 416.7 sent/sec
+  246016/550000 done, 417.0 sent/sec
+  256256/550000 done, 416.7 sent/sec
+  266496/550000 done, 416.6 sent/sec
+  276736/550000 done, 416.6 sent/sec
+  286976/550000 done, 416.9 sent/sec
+  297216/550000 done, 417.3 sent/sec
+  307456/550000 done, 416.9 sent/sec
+  317696/550000 done, 416.4 sent/sec
+  327936/550000 done, 416.5 sent/sec
+  338176/550000 done, 416.5 sent/sec
+  348416/550000 done, 416.3 sent/sec
+  358656/550000 done, 416.1 sent/sec
+  368896/550000 done, 415.9 sent/sec
+  379136/550000 done, 415.9 sent/sec
+  389376/550000 done, 415.8 sent/sec
+  399616/550000 done, 415.8 sent/sec
+  409856/550000 done, 415.9 sent/sec
+  420096/550000 done, 415.9 sent/sec
+  430336/550000 done, 416.1 sent/sec
+  440576/550000 done, 416.0 sent/sec
+  450816/550000 done, 416.2 sent/sec
+  461056/550000 done, 416.5 sent/sec
+  471296/550000 done, 416.2 sent/sec
+  481536/550000 done, 416.4 sent/sec
+  491776/550000 done, 416.4 sent/sec
+  502016/550000 done, 416.6 sent/sec
+  512256/550000 done, 416.4 sent/sec
+  522496/550000 done, 416.2 sent/sec
+  532736/550000 done, 416.2 sent/sec
+  542976/550000 done, 416.2 sent/sec
+Insert pool embeddings complete in 1323.9s -> /Users/dulan/Downloads/chathura_temp/research/vector-benchmark/embeddings/insert_embeddings.npy
