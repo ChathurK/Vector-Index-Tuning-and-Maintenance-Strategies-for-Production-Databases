@@ -45,6 +45,12 @@ def build_hnsw_index(conn, table_name, m, ef_construction):
         build_time = time.time() - start
     conn.commit()
 
+    # NEW: refresh planner statistics so Postgres reliably uses the new
+    # index rather than falling back to a sequential scan
+    with conn.cursor() as cur:
+        cur.execute(f"ANALYZE {table_name};")
+    conn.commit()
+
     size_bytes = get_index_size(conn, index_name)
     log_result(table_name, "hnsw", f"m={m},ef_construction={ef_construction}",
                 build_time, size_bytes)
@@ -65,6 +71,10 @@ def build_ivfflat_index(conn, table_name, lists):
             WITH (lists = {lists});
         """)
         build_time = time.time() - start
+    conn.commit()
+
+    with conn.cursor() as cur:
+        cur.execute(f"ANALYZE {table_name};")
     conn.commit()
 
     size_bytes = get_index_size(conn, index_name)

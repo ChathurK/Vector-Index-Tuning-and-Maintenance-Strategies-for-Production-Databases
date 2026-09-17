@@ -211,3 +211,7 @@ python scripts/scalability_profiling.py > logs/scalability_100k_1m.log 2>&1
 ```
 caffeinate -i python scripts/workload_profile.py > logs/workload_profile.log 2>&1
 ```
+# Maintenance & Index Degradation
+```
+caffeinate -i python scripts/maintenance_degradation.py > logs/maintenance_degradation.log 2>&1
+```
