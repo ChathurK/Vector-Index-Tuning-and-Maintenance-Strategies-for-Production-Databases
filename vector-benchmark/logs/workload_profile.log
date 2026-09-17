@@ -1,0 +1,25 @@
+Building HNSW baseline on items_500k...
+HNSW built on items_500k (m=32, ef_construction=128): 2859.4s, 2038.8MB
+
+--- Workload: hnsw | read_heavy (90/10) ---
+Read QPS=1054.2 | mean_lat=5.14ms | p95=9.98ms | write_throughput=117.3/s | total_writes=7038
+
+--- Workload: hnsw | balanced (50/50) ---
+Read QPS=325.4 | mean_lat=8.24ms | p95=15.04ms | write_throughput=326.6/s | total_writes=19599
+
+--- Workload: hnsw | write_heavy (30/70) ---
+Read QPS=92.0 | mean_lat=20.16ms | p95=49.33ms | write_throughput=206.6/s | total_writes=12398
+
+Building IVFFlat baseline on items_500k...
+IVFFlat built on items_500k (lists=707): 67.0s, 2052.4MB
+
+--- Workload: ivfflat | read_heavy (90/10) ---
+Read QPS=542.2 | mean_lat=14.16ms | p95=18.94ms | write_throughput=60.1/s | total_writes=3604
+
+--- Workload: ivfflat | balanced (50/50) ---
+Read QPS=452.8 | mean_lat=14.97ms | p95=20.76ms | write_throughput=455.4/s | total_writes=27326
+
+--- Workload: ivfflat | write_heavy (30/70) ---
+Read QPS=371.6 | mean_lat=15.66ms | p95=22.00ms | write_throughput=873.1/s | total_writes=52388
+
+Workload profile evaluation complete.

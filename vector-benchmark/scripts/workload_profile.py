@@ -93,58 +93,60 @@ def run_workload(index_type, search_param, profile_name, read_ratio, write_ratio
     id_counter = [0]
     id_lock = threading.Lock()
     results = {}
-
     threads = []
-    for i in range(N_WORKERS):
-        t = threading.Thread(target=worker_loop, args=(
-            i, read_ratio, index_type, search_param,
-            query_vecs, insert_vecs, id_counter, id_lock,
-            stop_event, results
-        ))
-        threads.append(t)
-        t.start()
 
-    time.sleep(DURATION_SEC)
-    stop_event.set()
-    for t in threads:
-        t.join()
+    try:
+        for i in range(N_WORKERS):
+            t = threading.Thread(target=worker_loop, args=(
+                i, read_ratio, index_type, search_param,
+                query_vecs, insert_vecs, id_counter, id_lock,
+                stop_event, results
+            ))
+            threads.append(t)
+            t.start()
 
-    all_read_latencies = []
-    total_writes = 0
-    for read_lat, writes in results.values():
-        all_read_latencies.extend(read_lat)
-        total_writes += writes
+        time.sleep(DURATION_SEC)
+        stop_event.set()
+        for t in threads:
+            t.join()
 
-    all_read_latencies = np.array(all_read_latencies) if all_read_latencies else np.array([0])
-    read_qps = len(all_read_latencies) / DURATION_SEC
-    write_throughput = total_writes / DURATION_SEC
+        all_read_latencies = []
+        total_writes = 0
+        for read_lat, writes in results.values():
+            all_read_latencies.extend(read_lat)
+            total_writes += writes
 
-    metrics = {
-        "table": TABLE, "index_type": index_type, "profile": profile_name,
-        "read_ratio": read_ratio, "write_ratio": write_ratio,
-        "duration_sec": DURATION_SEC, "n_workers": N_WORKERS,
-        "read_qps": read_qps,
-        "mean_read_latency_ms": all_read_latencies.mean() * 1000,
-        "p95_read_latency_ms": np.percentile(all_read_latencies, 95) * 1000,
-        "p99_read_latency_ms": np.percentile(all_read_latencies, 99) * 1000,
-        "write_throughput_per_sec": write_throughput,
-        "total_writes": total_writes,
-    }
-    log_result(metrics)
-    print(f"Read QPS={read_qps:.1f} | mean_lat={metrics['mean_read_latency_ms']:.2f}ms | "
-          f"p95={metrics['p95_read_latency_ms']:.2f}ms | "
-          f"write_throughput={write_throughput:.1f}/s | total_writes={total_writes}")
+        all_read_latencies = np.array(all_read_latencies) if all_read_latencies else np.array([0])
+        read_qps = len(all_read_latencies) / DURATION_SEC
+        write_throughput = total_writes / DURATION_SEC
 
-    # cleanup: remove inserted rows, then VACUUM to prevent dead-tuple bloat
-    # from accumulating across the 6 runs in this script - unlike the earlier
-    # index build/drop cycles, this phase actually churns table rows via
-    # real INSERT+DELETE, which is exactly what causes bloat.
-    conn = psycopg2.connect(**DB_CONFIG)
-    conn.autocommit = True
-    with conn.cursor() as cur:
-        cur.execute(f"DELETE FROM {TABLE} WHERE id >= %s;", (WRITE_ID_OFFSET,))
-        cur.execute(f"VACUUM ANALYZE {TABLE};")
-    conn.close()
+        metrics = {
+            "table": TABLE, "index_type": index_type, "profile": profile_name,
+            "read_ratio": read_ratio, "write_ratio": write_ratio,
+            "duration_sec": DURATION_SEC, "n_workers": N_WORKERS,
+            "read_qps": read_qps,
+            "mean_read_latency_ms": all_read_latencies.mean() * 1000,
+            "p95_read_latency_ms": np.percentile(all_read_latencies, 95) * 1000,
+            "p99_read_latency_ms": np.percentile(all_read_latencies, 99) * 1000,
+            "write_throughput_per_sec": write_throughput,
+            "total_writes": total_writes,
+        }
+        log_result(metrics)
+        print(f"Read QPS={read_qps:.1f} | mean_lat={metrics['mean_read_latency_ms']:.2f}ms | "
+              f"p95={metrics['p95_read_latency_ms']:.2f}ms | "
+              f"write_throughput={write_throughput:.1f}/s | total_writes={total_writes}")
+    finally:
+        # always runs, even on Ctrl+C or an exception mid-test
+        stop_event.set()
+        for t in threads:
+            if t.is_alive():
+                t.join(timeout=5)
+        conn = psycopg2.connect(**DB_CONFIG)
+        conn.autocommit = True
+        with conn.cursor() as cur:
+            cur.execute(f"DELETE FROM {TABLE} WHERE id >= %s;", (WRITE_ID_OFFSET,))
+            cur.execute(f"VACUUM ANALYZE {TABLE};")
+        conn.close()
 
 def log_result(metrics):
     file_exists = LOG_PATH.exists()

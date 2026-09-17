@@ -1,0 +1,3 @@
+table,index_type,params,build_time_sec,size_bytes
+items_500k,hnsw,"m=32,ef_construction=128",2859.39,2038759424
+items_500k,ivfflat,lists=707,66.96,2052382720
