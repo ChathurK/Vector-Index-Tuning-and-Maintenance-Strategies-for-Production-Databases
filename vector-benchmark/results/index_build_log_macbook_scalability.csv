@@ -1,0 +1,6 @@
+items_100k,hnsw,"m=32,ef_construction=128",129.59,408936448
+items_100k,ivfflat,lists=316,7.32,411549696
+items_500k,hnsw,"m=32,ef_construction=128",2785.99,2038759424
+items_500k,ivfflat,lists=707,58.70,2052358144
+items_1m,hnsw,"m=32,ef_construction=128",13089.90,4068057088
+items_1m,ivfflat,lists=1000,151.60,4102021120
