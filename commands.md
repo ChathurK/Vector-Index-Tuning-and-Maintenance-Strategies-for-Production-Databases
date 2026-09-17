@@ -2,6 +2,9 @@
 - [Set up the Python environment](#set-up-the-python-environment)
 - [Dataset generation pipeline](#dataset-generation-pipeline)
 - [The benchmark harness](#the-benchmark-harness)
+- [Maintenance \& Degradation (insert pool generation)](#maintenance--degradation-insert-pool-generation)
+- [Scalability Profiling](#scalability-profiling)
+- [Workload Profiling](#workload-profiling)
 
 # PostgreSQL + pgvector in Docker
 ```
@@ -195,4 +198,16 @@ python .\scripts\run_benchmark.py
 ```
 ```
 python .\scripts\sweep_phase3_tuning.py *> logs\phase3_tuning.log
+```
+# Maintenance & Degradation (insert pool generation)
+```
+python scripts/generate_insert_pool.py > logs/insert_pool_gen.log 2>&1
+```
+# Scalability Profiling
+```
+python scripts/scalability_profiling.py > logs/scalability_100k_1m.log 2>&1
+```
+# Workload Profiling
+```
+caffeinate -i python scripts/workload_profile.py > logs/workload_profile.log 2>&1
 ```
