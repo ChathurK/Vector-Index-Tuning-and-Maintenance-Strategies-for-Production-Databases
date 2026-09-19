@@ -128,6 +128,7 @@ def log_result(metrics):
         writer.writerow(metrics)
 
 def cleanup_maintenance_rows(conn):
+    conn.commit()  # close whatever transaction the prior SELECT loop left open
     conn.autocommit = True
     with conn.cursor() as cur:
         cur.execute(f"DELETE FROM {TABLE} WHERE id >= %s;", (MAINTENANCE_ID_OFFSET,))
