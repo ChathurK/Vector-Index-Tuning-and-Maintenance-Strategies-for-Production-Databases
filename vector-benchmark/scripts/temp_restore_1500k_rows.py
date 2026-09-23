@@ -6,25 +6,23 @@ import sys
 SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from maintenance_degradation import bulk_insert_chunk, DATA_DIR, DB_CONFIG, TABLE
+from maintenance_degradation import bulk_insert_chunk, DATA_DIR, DB_CONFIG, TABLE, MAINTENANCE_ID_OFFSET
 
 if __name__ == "__main__":
     conn = psycopg2.connect(**DB_CONFIG)
 
     with conn.cursor() as cur:
-        cur.execute(f"SELECT count(*) FROM {TABLE};")
-        count = cur.fetchone()[0]
-    print(f"{TABLE} currently has {count} rows")
+        cur.execute(f"SELECT count(*) FROM {TABLE} WHERE id >= %s;", (MAINTENANCE_ID_OFFSET,))
+        already_inserted = cur.fetchone()[0]
 
-    if count == 1_000_000:
+    print(f"{already_inserted} of 500,000 maintenance rows already present")
+
+    if already_inserted < 500_000:
         insert_vecs = np.load(DATA_DIR / "insert_embeddings.npy", mmap_mode="r")
-        print("Restoring 500,000 maintenance rows...")
-        bulk_insert_chunk(conn, insert_vecs, 0, 500_000)
-    elif count == 1_500_000:
-        print("Already at 1,500,000 rows - nothing to do.")
+        print(f"Resuming insert from row {already_inserted}...")
+        bulk_insert_chunk(conn, insert_vecs, already_inserted, 500_000)
     else:
-        print(f"Unexpected row count ({count}) - stop and investigate before proceeding.")
-        sys.exit(1)
+        print("Already at 500,000 maintenance rows - nothing to do.")
 
     with conn.cursor() as cur:
         cur.execute(f"SELECT count(*) FROM {TABLE};")

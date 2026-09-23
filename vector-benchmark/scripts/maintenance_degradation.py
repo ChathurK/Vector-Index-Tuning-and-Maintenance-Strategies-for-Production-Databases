@@ -34,8 +34,10 @@ def vector_to_pg_literal(vec):
 
 def bulk_insert_chunk(conn, insert_vecs, start_idx, end_idx):
     print(f"  Inserting rows {start_idx}-{end_idx} ({end_idx - start_idx} vectors)...")
+    CHUNK = 20_000
+    t0 = time.time()
+    total = end_idx - start_idx
     with conn.cursor() as cur:
-        CHUNK = 20_000
         for cs in range(start_idx, end_idx, CHUNK):
             ce = min(cs + CHUNK, end_idx)
             buf = io.StringIO()
@@ -45,7 +47,10 @@ def bulk_insert_chunk(conn, insert_vecs, start_idx, end_idx):
             cur.copy_expert(
                 f"COPY {TABLE} (id, embedding) FROM STDIN WITH (FORMAT text)", buf
             )
-    conn.commit()
+            conn.commit()
+            elapsed = time.time() - t0
+            print(f"  {ce - start_idx}/{total} rows loaded, {elapsed:.1f}s elapsed")
+    print(f"Chunk insert done: {total} rows in {time.time() - t0:.1f}s")
 
 def compute_growing_ground_truth(query_vecs, orig_norms, insert_vecs, cumulative_count):
     q_norm = query_vecs / np.linalg.norm(query_vecs, axis=1, keepdims=True)
@@ -183,7 +188,7 @@ if __name__ == "__main__":
     conn = psycopg2.connect(**DB_CONFIG)
     query_vecs = np.load(DATA_DIR / "query_embeddings.npy")
     insert_vecs = np.load(DATA_DIR / "insert_embeddings.npy", mmap_mode="r")
-    orig_ground_truth = np.load(DATA_DIR / "ground_truth_1000000.npy")
+    orig_ground_truth = np.load(DATA_DIR / "ground_truth_1000000.npy")[:, :K]  # was full top-100, now top-10
 
     print("Loading and normalizing the original 1M corpus (cached across both algorithms)...")
     orig_corpus = np.load(DATA_DIR / "embeddings_1000000.npy")

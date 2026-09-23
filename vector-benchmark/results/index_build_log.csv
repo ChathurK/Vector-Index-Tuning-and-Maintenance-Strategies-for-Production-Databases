@@ -4,3 +4,4 @@ items_1m,ivfflat,lists=1000,208.12,6150119424
 items_1m,hnsw,"m=32,ef_construction=128",12199.99,4068048896
 items_1m,ivfflat,lists=1000,183.81,4102193152
 items_1m,hnsw,"m=32,ef_construction=128",11646.71,4068057088
+items_1m,hnsw,"m=32,ef_construction=128",51846.24,6101745664
